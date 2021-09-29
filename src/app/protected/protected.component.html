@@ -1,0 +1,26 @@
+<h3>Received from bridge:</h3>
+<mat-button-toggle-group #viewGroup = "matButtonToggleGroup">
+    <mat-button-toggle value = "plain">
+        Plain
+    </mat-button-toggle>
+    <mat-button-toggle value = "decrypted">
+        Decrypted
+    </mat-button-toggle>
+</mat-button-toggle-group>
+
+<div *ngIf="viewGroup.value == 'plain'">
+    <p>{{userInfo['vUZI']}}</p>
+</div>
+<div *ngIf="viewGroup.value == 'decrypted'">
+    <p>
+    For decryption we need the private key from the public key that is used for encryption.<br />
+    Public key: <br />
+    {{publicKey}}<br />
+    Load our private key to read encrypted content.</p>
+    <input type="file" (change)=onFileSelected($event) accept=".key,.pem"/><br />
+    Decrypted:<br /><br />
+    <!-- <div *ngFor="let item of userDataDecrypted | keyvalue">
+        Key: <b>{{item.key}}</b> and Value: <b>{{item.value}}</b>
+    </div> -->
+    {{userDataDecrypted}}
+</div>
