@@ -3,7 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  issuer: "https://poc-1.uzi.bavod.nl",
+  redirectPath: '/login',
+  clientId: "98765432",
+  responseType: "code",
+  scope: "openid",
+  oidc: true,
+  showDebugInformation: true
 };
 
 /*

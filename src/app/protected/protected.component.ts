@@ -7,6 +7,8 @@ import { authCodeFlowConfig } from '../app.component';
 import { compactDecrypt } from 'jose/jwe/compact/decrypt'
 import { importPKCS8, importX509 } from 'jose/key/import'
 import { compactVerify } from 'jose/jws/compact/verify'
+import { interval, Observable, Scheduler, SchedulerLike, Subscription } from 'rxjs';
+import { exec } from 'child_process';
 
 interface IUserInfo {vUZI:string,pubkey_URA:string};
 
@@ -37,6 +39,7 @@ J0/vVhoNZ/EjU847fw==
 `;
 
   public userInfo: IUserInfo = {vUZI:"",pubkey_URA:""};
+  public interval: Subscription | undefined= undefined;
   public publicKey: string = "";
   public decrypted: string = "";
   public userDataDecrypted: any = undefined;
@@ -44,17 +47,26 @@ J0/vVhoNZ/EjU847fw==
   constructor(private oauthService: OAuthService, private router: Router, private httpClient: HttpClient) { }
   
   async ngOnInit(): Promise<void> {
+    this.interval = interval(1000).subscribe(async x => this.getUserInfo());
+  }
+  
+  async getUserInfo(): Promise<void>{
+    if(this.oauthService.getAccessToken() == null){
+      return;
+    }
     try{
       const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + this.oauthService.getAccessToken());
+        .set('Authorization', 'Bearer ' + this.oauthService.getAccessToken());
       this.userInfo = await this.httpClient.get<IUserInfo>(authCodeFlowConfig.issuer + "/userinfo", {headers}).toPromise();
+      console.log(this.userInfo);
       this.publicKey = atob(this.userInfo.pubkey_URA);
+      this.interval?.unsubscribe();
     } catch(error){
       this.oauthService.logOut();
       this.router.navigate(["/home"]);
     }
   }
-  
+
   async onFileSelected(event: any): Promise<void>{
     const file:File = event.target.files[0];
     const fileReader = new FileReader();
@@ -62,7 +74,7 @@ J0/vVhoNZ/EjU847fw==
     fileReader.onload = async (_) => {
       content = fileReader.result as string;
       if(!content.startsWith("-----BEGIN PRIVATE KEY-----")){
-        console.log("Please load a private key");
+        this.userDataDecrypted = "Please load a private key";
         return;
       }
       await this.decryptJwe(this.userInfo.vUZI, content);
@@ -71,15 +83,19 @@ J0/vVhoNZ/EjU847fw==
   }
   
   async decryptJwe(jwe: string, fileText: string): Promise<void>{
-    const algorithm = 'RSA-OAEP'
-    const ecPrivateKey = await importPKCS8(fileText, algorithm)
-    const { plaintext, protectedHeader } = await compactDecrypt(jwe, ecPrivateKey);
-    
-    const jws = new TextDecoder().decode(plaintext);
-
-    const importedCert = await importX509(this.cert, "RS256");
-    const result = await compactVerify(jws, importedCert);
-    this.userDataDecrypted = new TextDecoder().decode(result.payload);
-    console.log(this.userDataDecrypted);
+    try{
+      const algorithm = 'RSA-OAEP'
+      const ecPrivateKey = await importPKCS8(fileText, algorithm)
+      const { plaintext, protectedHeader } = await compactDecrypt(jwe, ecPrivateKey);
+      
+      const jws = new TextDecoder().decode(plaintext);
+      
+      const importedCert = await importX509(this.cert, "RS256");
+      const result = await compactVerify(jws, importedCert);
+      this.userDataDecrypted = new TextDecoder().decode(result.payload);
+    } catch(exception){
+      console.log(exception);
+      this.userDataDecrypted = "Error while decrypting: " + exception;
+    }
   }
 }

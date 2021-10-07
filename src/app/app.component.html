@@ -1,5 +1,5 @@
-<mat-toolbar>
-  <span>My Application</span>
+<mat-toolbar [ngStyle]="{'background-color': backgroundColor()}">
+  <span>{{clientId}} Uzi poc browser side only</span>
   <button mat-button [routerLink]="'/home'"> Home </button>
   <button mat-button *ngIf="canLogout()" [routerLink]="'/protected'"> Protected </button>
   <span class="spacer"></span>

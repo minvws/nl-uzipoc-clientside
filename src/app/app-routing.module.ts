@@ -6,6 +6,7 @@ import { ProtectedComponent } from './protected/protected.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'protected', component: ProtectedComponent },
+  { path: 'login', redirectTo: 'protected' },
 ];
 
 @NgModule({
