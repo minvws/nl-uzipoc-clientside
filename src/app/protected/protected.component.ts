@@ -37,6 +37,29 @@ JMl1eeOFMudDMpYORuggKdZlU6YBjrWOsXD6Uy7yZ6Gcap0dYJbyUmQIi5dyeZM6eU++BDd0TQKh
 J0/vVhoNZ/EjU847fw==
 -----END CERTIFICATE-----
 `;
+  public cert_uzi:string = `-----BEGIN CERTIFICATE-----
+MIIDfzCCAmegAwIBAgIUdEcZ1zOWaoRoGRd3cdK8p1BtUF4wDQYJKoZIhvcNAQEL
+BQAwTzELMAkGA1UEBhMCbmwxCzAJBgNVBAgMAm92MRAwDgYDVQQHDAdIZW5nZWxv
+MSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMjExMTE2MTQx
+NjU1WhcNMjIxMTE2MTQxNjU1WjBPMQswCQYDVQQGEwJubDELMAkGA1UECAwCb3Yx
+EDAOBgNVBAcMB0hlbmdlbG8xITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5
+IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL2IyT5UdYF+lMQF
+l37pQMegXPJICzNQbe8M8s+VUILl2lySJGnMmw/U/Kc6RJHz0R4VUFn81+RweuxX
+A6+lA0Uk6YM9f6yyU2GXVKl50RbfvlC16VCD9cjoMr8vRlWBWiuIiZfSKrf7nRwz
+VuM9KwI2uh5WZFAytlI+SSrIkRIhQmOazpNPb0WLZutIdLSekPByB707Zzp3Lxvd
+smJjSHoyZ+yvL6DozzlD49IyTki/QO2SRIcVY0A7TnZA82kG6ZfnyxOeOQsU81fH
+Db2Gczp848qRwWJD/94a1/ab0M+1Sju3jRrhIZzMwQGJ8bRxETsgZdc23I0LqXFr
+QsrazIMCAwEAAaNTMFEwHQYDVR0OBBYEFMhq4vVr7F7BwUTU18pLxS902H+QMB8G
+A1UdIwQYMBaAFMhq4vVr7F7BwUTU18pLxS902H+QMA8GA1UdEwEB/wQFMAMBAf8w
+DQYJKoZIhvcNAQELBQADggEBABPJLYWtxVNRpCkYLgW7hesdLs0OjDGLhJ+RM8sV
+/Cn8qWxyFYoyWDAZsa8Grnr1nDDrHR5HSyPcnsxO9I0XQfaOsV5qkmx0wzkxYfmp
+jHEYz+rknQu4Mv0qnbJw2rgtesl6wAUuSAaXCEf+pRHgF389/sK9OqfaDfGUej8f
+4ySnMJu9a5D0cYs9BNILOFNpGyhDlLeTrALMxBYqTVmbTPnip7p607RvOCCIi6jo
+1kzMd+9IXzPirMmRFTj+ut2z0Dk7cIkkz8gll+nShlzerc5aD8TY5ehp9N7OoGs0
+kQoxle0VO/DcjeZ3ONeYWR/5OjuJl0pbqUTPr3eANVJZlTo=
+-----END CERTIFICATE-----
+`;
+
 
   public userInfo: IUserInfo = {vUZI:"",pubkey_URA:""};
   public interval: Subscription | undefined= undefined;
@@ -45,11 +68,11 @@ J0/vVhoNZ/EjU847fw==
   public userDataDecrypted: any = undefined;
 
   constructor(private oauthService: OAuthService, private router: Router, private httpClient: HttpClient) { }
-  
+
   async ngOnInit(): Promise<void> {
     this.interval = interval(1000).subscribe(async x => this.getUserInfo());
   }
-  
+
   async getUserInfo(): Promise<void>{
     if(this.oauthService.getAccessToken() == null){
       return;
@@ -81,17 +104,26 @@ J0/vVhoNZ/EjU847fw==
     }
     fileReader.readAsText(file);
   }
-  
+
   async decryptJwe(jwe: string, fileText: string): Promise<void>{
     try{
       const algorithm = 'RSA-OAEP'
       const ecPrivateKey = await importPKCS8(fileText, algorithm)
       const { plaintext, protectedHeader } = await compactDecrypt(jwe, ecPrivateKey);
-      
+
       const jws = new TextDecoder().decode(plaintext);
-      
-      const importedCert = await importX509(this.cert, "RS256");
-      const result = await compactVerify(jws, importedCert);
+
+      let result;
+      try{
+        const importedCert = await importX509(this.cert, "RS256");
+        result = await compactVerify(jws, importedCert);
+      } catch(e){
+        //const importedCert = await importX509(this.cert_uzi, "RS256");
+        const importedCert = await importX509(this.cert_uzi, "RS256");
+        result = await compactVerify(jws, importedCert);
+      }
+      console.log(result);
+
       this.userDataDecrypted = new TextDecoder().decode(result.payload);
     } catch(exception){
       console.log(exception);
