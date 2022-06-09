@@ -1,9 +1,20 @@
-<mat-toolbar [ngStyle]="{'background-color': backgroundColor()}">
-  <span>{{clientId}} Uzi poc browser side only</span>
-  <button mat-button [routerLink]="'/home'"> Home </button>
-  <button mat-button *ngIf="canLogout()" [routerLink]="'/protected'"> Protected </button>
-  <span class="spacer"></span>
-  <button mat-button *ngIf="!canLogout()" (click)="login()">Login </button>
-  <button mat-button *ngIf="canLogout()" (click)="logout()">Logout</button>
-</mat-toolbar>
-<router-outlet></router-outlet>
+
+<p>
+  <button (click)="login()">login</button>
+  <button (click)="logout()">logout</button>
+</p>
+
+<p>
+  userinfo: <br />
+  {{userinfo}}
+</p>
+
+<p>
+  load private key: <br />
+  <input type="file" (change)=onFileSelected($event) accept=".key,.pem" [disabled]="userinfo == ''"/><br />
+</p>
+
+<p>
+  decrypted: <br />
+  {{decrypted}}
+</p>

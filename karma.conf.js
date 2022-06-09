@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/uzi-poc-clientside'),
+      dir: require('path').join(__dirname, './coverage/nl-uzipoc-clientside'),
       subdir: '.',
       reporters: [
         { type: 'html' },

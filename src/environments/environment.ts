@@ -4,14 +4,6 @@
 
 export const environment = {
   production: false,
-  issuer: "https://poc-1.uzi.bavod.nl",
-  //issuer: "https://localhost:8006",
-  redirectPath: '/login',
-  clientId: "98765432",
-  responseType: "code",
-  scope: "openid",
-  oidc: true,
-  showDebugInformation: true
 };
 
 /*

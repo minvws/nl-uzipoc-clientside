@@ -3,39 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatButtonModule } from '@angular/material/button';
-import { HomeComponent } from './home/home.component';
-import { ProtectedComponent } from './protected/protected.component';
-import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
-export function storageFactory() : OAuthStorage {
-  return sessionStorage
-}
+import { AuthConfigModule } from './auth/auth-config.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent,
-    ProtectedComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    HttpClientModule,
-    OAuthModule.forRoot(),
+    AuthConfigModule
   ],
-  providers: [
-    { provide: OAuthStorage, useFactory: storageFactory }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
