@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from 'angular-auth-oidc-client';
+import { environment } from './../../environments/environment'
 
 
 @NgModule({
     imports: [AuthModule.forRoot({
         config: {
-            authority: 'https://inge_6_uzipoc:8006',
+            authority: environment.authority,
             redirectUrl: window.location.origin,
             postLogoutRedirectUri: window.location.origin,
-            clientId: 'nl_uzipoc_clientside',
+            clientId: environment.clientId,
             scope: 'openid', // 'openid profile ' + your scopes
             responseType: 'code',
             silentRenew: false,
