@@ -2,7 +2,7 @@
 This client provides an example how to connect to the https://github.com/minvws/nl-uzipoc-max OIDC service.
 
 ## Requirements
-To run this Angular example you need the have `npm 8.1.2` 
+This Angular example is tested with `npm 8.1.2` 
 
 Run this example with:
 ```
