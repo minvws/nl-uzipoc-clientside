@@ -6,8 +6,7 @@ import { authCodeFlowConfig } from '../app.component';
 import { compactDecrypt } from 'jose/jwe/compact/decrypt'
 import { importPKCS8, importX509 } from 'jose/key/import'
 import { compactVerify } from 'jose/jws/compact/verify'
-import { interval, Observable, Scheduler, SchedulerLike, Subscription } from 'rxjs';
-import { exec } from 'child_process';
+import { interval, Subscription } from 'rxjs';
 
 interface IUserInfo {vUZI:string,pubkey_URA:string};
 

@@ -11,7 +11,6 @@ import { HomeComponent } from './home/home.component';
 import { ProtectedComponent } from './protected/protected.component';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 
 export function storageFactory() : OAuthStorage {
   return sessionStorage
