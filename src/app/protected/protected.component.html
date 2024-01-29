@@ -19,8 +19,5 @@
     Load our private key to read encrypted content.</p>
     <input type="file" (change)=onFileSelected($event) accept=".key,.pem"/><br />
     Decrypted:<br /><br />
-    <!-- <div *ngFor="let item of userDataDecrypted | keyvalue">
-        Key: <b>{{item.key}}</b> and Value: <b>{{item.value}}</b>
-    </div> -->
     {{userDataDecrypted}}
 </div>
