@@ -17,7 +17,7 @@ interface IUserInfo {vUZI:string,pubkey_URA:string};
 })
 export class ProtectedComponent implements OnInit {
 
-public cert:string = `-----BEGIN CERTIFICATE-----
+public cert: string = `-----BEGIN CERTIFICATE-----
 MIIDJzCCAg+gAwIBAgIIMt5jmZsVqKswDQYJKoZIhvcNAQELBQAwGjEYMBYGA1UEAxMPQ0lCRyBT
 UyBSb290IENBMCAXDTE1MDYwODA3NDkyNFoYDzIwNTAwMTAxMDg0OTI0WjApMScwJQYDVQQDEx52
 d3MtZGNhLXdzZ3QtMDEubXN0Lm1oc3JpamsubmwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
@@ -35,7 +35,7 @@ JMl1eeOFMudDMpYORuggKdZlU6YBjrWOsXD6Uy7yZ6Gcap0dYJbyUmQIi5dyeZM6eU++BDd0TQKh
 J0/vVhoNZ/EjU847fw==
 -----END CERTIFICATE-----
 `;
-  public cert_uzi:string = `-----BEGIN CERTIFICATE-----
+  public cert_uzi: string = `-----BEGIN CERTIFICATE-----
 MIIDfzCCAmegAwIBAgIUdEcZ1zOWaoRoGRd3cdK8p1BtUF4wDQYJKoZIhvcNAQEL
 BQAwTzELMAkGA1UEBhMCbmwxCzAJBgNVBAgMAm92MRAwDgYDVQQHDAdIZW5nZWxv
 MSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMjExMTE2MTQx
@@ -79,7 +79,6 @@ kQoxle0VO/DcjeZ3ONeYWR/5OjuJl0pbqUTPr3eANVJZlTo=
       const headers = new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.oauthService.getAccessToken());
       this.userInfo = await this.httpClient.get<IUserInfo>(authCodeFlowConfig.issuer + "/userinfo", {headers}).toPromise();
-      console.log(this.userInfo);
       this.publicKey = atob(this.userInfo.pubkey_URA);
       this.interval?.unsubscribe();
     } catch(error){
@@ -89,7 +88,7 @@ kQoxle0VO/DcjeZ3ONeYWR/5OjuJl0pbqUTPr3eANVJZlTo=
   }
 
   async onFileSelected(event: any): Promise<void>{
-    const file:File = event.target.files[0];
+    const file: File = event.target.files[0];
     const fileReader = new FileReader();
     let content = "";
     fileReader.onload = async (_) => {
@@ -116,7 +115,6 @@ kQoxle0VO/DcjeZ3ONeYWR/5OjuJl0pbqUTPr3eANVJZlTo=
         const importedCert = await importX509(this.cert, "RS256");
         result = await compactVerify(jws, importedCert);
       } catch(e){
-        //const importedCert = await importX509(this.cert_uzi, "RS256");
         const importedCert = await importX509(this.cert_uzi, "RS256");
         result = await compactVerify(jws, importedCert);
       }
