@@ -104,5 +104,7 @@
       }
     }
   },
-  "defaultProject": "uzi-poc-clientside"
+  "cli": {
+    "analytics": false
+  }
 }
