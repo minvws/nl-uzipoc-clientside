@@ -6,8 +6,6 @@ This Repository is created as a PoC (Proof of Concept) as part of the project *T
 
 This is a Proof of Concept (PoC) that even a client side application can connect to the OIDC GW using JWE's that can be decrypted by client keys that are present on the client(browser). 
 
-Please note that this repository is a proof of concept only, and it is not meant to be used in a production setup
-
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.
 
 ## Development server
