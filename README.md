@@ -1,3 +1,7 @@
+# Disclaimer
+This Repository is created as a PoC (Proof of Concept) as part of the project *Toekomstbestendig maken UZI*, and 
+**should not be used as is in any production environment**.
+
 # UziPocClientside
 
 This is a Proof of Concept (PoC) that even a client side application can connect to the OIDC GW using JWE's that can be decrypted by client keys that are present on the client(browser). 
